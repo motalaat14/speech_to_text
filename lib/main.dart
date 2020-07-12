@@ -22,6 +22,7 @@ class _VoiceHomeState extends State<VoiceHome> {
   SpeechRecognition speechRecognition;
   bool isAvailable = false;
   bool isListening = false;
+  bool stop = true;
   String resultText = "";
 
   @override
@@ -80,6 +81,9 @@ class _VoiceHomeState extends State<VoiceHome> {
                     if(isAvailable && !isListening){
                       speechRecognition.listen(locale: "en_US").then((result){
                         print("$result");
+                        setState(() {
+                          stop = false;
+                        });
                       });
                     }
                   },
@@ -107,6 +111,7 @@ class _VoiceHomeState extends State<VoiceHome> {
                         resultText="";
                         setState(() {
                           isListening=result;
+                          stop =true;
                         });
                       });
                     }
@@ -139,7 +144,7 @@ class _VoiceHomeState extends State<VoiceHome> {
               ),
               padding: EdgeInsets.symmetric(vertical: 12,horizontal: 16),
               margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              child: Text(resultText,style: TextStyle(fontSize: 18,color: Colors.blueGrey.shade900,fontWeight: FontWeight.w300),),
+              child: Text(stop ? "" :resultText,style: TextStyle(fontSize: 18,color: Colors.blueGrey.shade900,fontWeight: FontWeight.w300),),
             ),
           ],
         ),
